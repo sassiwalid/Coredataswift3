@@ -20,9 +20,9 @@ class ViewController: UIViewController {
         let newuser = NSEntityDescription.insertNewObject(forEntityName: "User", into: context)
         
         // add user data
-        newuser.setValue("walid", forKey: "login")
-        newuser.setValue("pass", forKey: "passwd")
-        newuser.setValue("32", forKey: "age")
+        newuser.setValue("Imen", forKey: "login")
+        newuser.setValue("mypass", forKey: "passwd")
+        newuser.setValue(28, forKey: "age")
         do {
             try
             context.save()
@@ -30,6 +30,26 @@ class ViewController: UIViewController {
             
         }
         catch {
+            print("there was an error")
+        }
+        // restore data from coredata
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "User")
+        request.returnsObjectsAsFaults = false
+        do{
+            let results = try context.fetch(request)
+            if results.count > 0 {
+                // show content of the User table
+                for result in results as![NSManagedObject]{
+                    if let login = result.value(forKey: "login") as? String{
+                        print (login)
+                    }
+                }
+                
+            }else{
+                print("No results")
+            }
+        }
+        catch{
             print("there was an error")
         }
     }
